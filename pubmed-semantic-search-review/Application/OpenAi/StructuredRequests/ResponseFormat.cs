@@ -6,9 +6,9 @@ public partial class ResponseFormat<TProperties>
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("type")]
-    public string Type { get; set; }
+    public string Type { get; set; } = default!;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("json_schema")]
-    public JsonSchema<TProperties> JsonSchema { get; set; }
+    public JsonSchema<TProperties> JsonSchema { get; set; } = default!;
 }

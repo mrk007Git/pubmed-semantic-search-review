@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PubMedSemanticSearchReview.Application.PubMed;
 using Serilog;
 
 namespace PubMedSemanticSearchReview.Application;
@@ -16,6 +17,7 @@ internal static class DependencyInjection
 
         services.AddSingleton(Log.Logger);
 
+        services.AddTransient<IPubmedArticleSetService, PubmedArticleSetService>();
 
         return services;
     }

@@ -30,9 +30,9 @@ internal class OpenAiConfigValidation : IValidateOptions<OpenAiConfig>
             errors.Add($"{nameof(options.SystemRole)} is required.");
         }
 
-        if (options.Temperature < 0 || options.Temperature > 100)
+        if (options.Temperature < 0 || options.Temperature > 11)
         {
-            errors.Add($"{nameof(options.Temperature)} must be between 0 and 100.");
+            errors.Add($"{nameof(options.Temperature)} must be between 0 and 1.");
         }
 
         if (options.MaxTokens <= 0)

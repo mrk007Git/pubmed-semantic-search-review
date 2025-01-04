@@ -1,4 +1,7 @@
-﻿using DhsResearchLibrary.Application.OpenAI;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
+using DhsResearchLibrary.Application.OpenAI;
+using Microsoft.Extensions.Options;
 using PubMedSemanticSearchReview.Application.OpenAi;
 using PubMedSemanticSearchReview.Application.OpenAi.AbstractAnalysis;
 using PubMedSemanticSearchReview.Application.OpenAi.Requests;
@@ -6,26 +9,16 @@ using PubMedSemanticSearchReview.Application.OpenAi.Responses;
 using PubMedSemanticSearchReview.Application.OpenAi.StructuredRequests;
 using PubMedSemanticSearchReview.Infrastructure.Configuration;
 using Serilog;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text.Json;
 using AbstractAnalysisProperties = PubMedSemanticSearchReview.Application.OpenAi.AbstractAnalysis.Properties;
 using RequestMessage = PubMedSemanticSearchReview.Application.OpenAi.Requests.Message;
 
 namespace DhsResearchLibrary.Infrastructure.OpenAI;
 
-public class ChatCompletionService : IChatCompletionService
+public class ChatCompletionService(HttpClient httpClient, IOptions<OpenAiConfig> options, ILogger logger) : IChatCompletionService
 {
-    private readonly HttpClient _httpClient;
-    private readonly OpenAiConfig _config;
-    private readonly ILogger _logger;
-
-    public ChatCompletionService(HttpClient httpClient, OpenAiConfig config, ILogger logger)
-    {
-        _httpClient = httpClient;
-        _config = config;
-        _logger = logger;
-    }
+    private readonly HttpClient _httpClient = httpClient;
+    private readonly OpenAiConfig _config = options.Value;
+    private readonly ILogger _logger = logger;
 
     public async Task<ChatResponseWithUsageDto?> GetChatResponseAsync(string systemPrompt, string userPrompt)
     {
@@ -39,6 +32,7 @@ public class ChatCompletionService : IChatCompletionService
                 Content = userPrompt}
             ],
             Model = _config.Model,
+            Temperature = _config.Temperature
         };
 
         _httpClient.DefaultRequestHeaders.Authorization =
@@ -64,7 +58,7 @@ public class ChatCompletionService : IChatCompletionService
     public async Task<StructuredResponseDto?> GetStructuredAbstractAnalysisResponseAsync(string systemPrompt, string userPrompt)
     {
         StructuredRequestDto<AbstractAnalysisProperties> request =
-            StructureRequestBuilder.GetAbstractAnalysisRequest(_config.Model, systemPrompt, userPrompt);
+            StructureRequestBuilder.GetAbstractAnalysisRequest(_config.Model, systemPrompt, userPrompt, _config.MaxTokens, _config.Temperature);
 
         _httpClient.DefaultRequestHeaders.Authorization =
          new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _config.ApiKey);

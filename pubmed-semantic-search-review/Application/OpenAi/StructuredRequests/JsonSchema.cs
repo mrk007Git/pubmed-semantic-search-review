@@ -6,7 +6,7 @@ public partial class JsonSchema<TProperties>
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("strict")]
@@ -14,5 +14,5 @@ public partial class JsonSchema<TProperties>
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("schema")]
-    public Schema<TProperties> Schema { get; set; }
+    public Schema<TProperties> Schema { get; set; } = default!;
 }

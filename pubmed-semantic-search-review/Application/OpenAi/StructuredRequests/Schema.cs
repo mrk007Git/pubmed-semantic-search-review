@@ -6,15 +6,15 @@ public partial class Schema<TProperties>
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("type")]
-    public string Type { get; set; }
+    public string Type { get; set; } = default!;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("properties")]
-    public TProperties Properties { get; set; }
+    public TProperties Properties { get; set; } = default!;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("required")]
-    public List<string> SchemaRequired { get; set; }
+    public List<string> SchemaRequired { get; set; } = default!;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("additionalProperties")]

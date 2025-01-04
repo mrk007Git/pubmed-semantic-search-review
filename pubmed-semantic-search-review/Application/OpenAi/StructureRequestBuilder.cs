@@ -39,11 +39,14 @@ namespace PubMedSemanticSearchReview.Application.OpenAi
             return $"Article Title: {articleTitle}\r\nAbstract Summary: {abstractSummary}\\r\\nRelevance Reason: {relevanceReason}\\r\\n{postPromptText}";
         }
 
-        public static StructuredRequestDto<AbstractAnalysisProperties> GetAbstractAnalysisRequest(string model, string systemPrompt, string userPrompt)
+        public static StructuredRequestDto<AbstractAnalysisProperties> GetAbstractAnalysisRequest(string model, string systemPrompt, string userPrompt,
+            int maxTokens, double temperature)
         {
             return new()
             {
                 Model = model,
+                MaxTokens = maxTokens,
+                Temperature = temperature,
                 Messages = [
                 new StructuredMessage{ Role = "system", Content = systemPrompt},
                 new StructuredMessage{ Role = "user", Content = userPrompt}

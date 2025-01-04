@@ -6,10 +6,10 @@ public partial class CustomType
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("type")]
-    public string Type { get; set; }
+    public string Type { get; set; } = default!;
 
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("description")]
-    public string Description { get; set; }
+    public string Description { get; set; } = default!;
 }
