@@ -11,19 +11,6 @@ using PubMedConfigurationBuilder = PubMedSemanticSearchReview.Infrastructure.Con
 
 Console.WriteLine("Welcome to the PubMed Semantic Search Review!");
 
-
-
-
-
-Console.WriteLine($"Are you sure you want to process {string.Join(", ", pubMedSearchTerms)}? (Press ENTER to continue)");
-
-if (Console.ReadKey().Key != ConsoleKey.Enter)
-{
-    Console.WriteLine("Exiting...");
-    Console.WriteLine();
-    return;
-}
-
 var configuration = PubMedConfigurationBuilder.GetConfiguration(new Microsoft.Extensions.Configuration.ConfigurationBuilder());
 
 var logger = new LoggerConfiguration()
@@ -31,9 +18,19 @@ var logger = new LoggerConfiguration()
     .CreateLogger();
 
 string[] pubMedSearchTerms = File.ReadAllLines(@"Data\PubMedSearchTerms.txt");
+
 if(pubMedSearchTerms.Length == 0)
 {
     logger.Error("No PubMed search terms found in Data\\PubMedSearchTerms.txt. Exiting...");
+    return;
+}
+
+Console.WriteLine($"Are you sure you want to process {string.Join(", ", pubMedSearchTerms)}? (Press ENTER to continue)");
+
+if (Console.ReadKey().Key != ConsoleKey.Enter)
+{
+    Console.WriteLine("Exiting...");
+    Console.WriteLine();
     return;
 }
 
@@ -125,4 +122,11 @@ foreach(var articleResult in articleResults)
         logger.Information("Creating directory: {SavePath}", savePath);
         Directory.CreateDirectory(savePath);
     }
+
+    var csvPath = Path.Combine(savePath, "articles.csv");
+    logger.Information("Saving articles to: {CsvPath}", csvPath);
+    //Write the articles to a CSV file
+    serviceProvider.GetRequiredService<ICsvService<ArticleDto>>().WriteCsv(csvPath, articleResult.Value);
+    //Open the folder
+    System.Diagnostics.Process.Start("explorer.exe", savePath);
 }

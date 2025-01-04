@@ -13,25 +13,12 @@ public partial class ArticleDto
     public decimal? EstimatedPercentRelevant { get; set; }
     public string? AbstractSummary { get; set; }
     public string? RelevanceReason { get; set; }
-    public string? Comments { get; set; }
     public DateTime? DateProcessed { get; set; }
 
     public int? PromptTokens { get; set; }
     public int? CompletionTokens { get; set; }
 
     public string? SearchTerm { get; set; }
-
-    public string AbstractShort
-    {
-        get
-        {
-            if (AbstractText is not null && AbstractText.Length > 150)
-            {
-                return $"{AbstractText[..150]}...";
-            }
-            return AbstractText ?? "?";
-        }
-    }
 
     public static ArticleDto Create(string searchTerm, PubMed.PubMedArticleDto pubMedArticleDto)
     {
@@ -41,7 +28,6 @@ public partial class ArticleDto
             AbstractText = pubMedArticleDto.AbstractText,
             ArticleTitle = pubMedArticleDto.ArticleTitle,
             AbstractSummary = null,
-            Comments = null,
             DateComplete = pubMedArticleDto.DateCompleted,
             DateProcessed = null,
             DateRevised = pubMedArticleDto.DateRevised,

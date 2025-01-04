@@ -9,11 +9,9 @@ public class StructuredRequestDto<TProperties>
     [JsonPropertyName("model")]
     public string Model { get; set; } = default!;
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("temperature")]
     public double Temperature { get; set; }
 
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("max_tokens")]
     public int MaxTokens { get; set; }
 

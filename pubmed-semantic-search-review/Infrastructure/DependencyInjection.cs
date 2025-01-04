@@ -26,6 +26,8 @@ internal static class DependencyInjection
         AddValidatedOptions<PubMedConfig, PubMedConfigValidation>(services, configuration, nameof(PubMedConfig));
         AddValidatedOptions<OpenAiConfig, OpenAiConfigValidation>(services, configuration, nameof(OpenAiConfig));
 
+        services.AddScoped(typeof(ICsvService<>), typeof(CsvService<>));
+
         return services;
     }
 
