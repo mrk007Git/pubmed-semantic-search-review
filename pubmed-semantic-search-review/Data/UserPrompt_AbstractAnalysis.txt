@@ -1,0 +1,4 @@
+﻿Research Question "How would the outcomes or insights of selected medical publications have been influenced if LLM-enhanced semantic search had been used to expand search terms and capture broader semantic matches during their literature reviews?" 
+Research Hypothesis "LLM-enhanced semantic search will uncover more semantically relevant and contextually appropriate studies than traditional lexical search methods in medical literature reviews, thereby providing deeper insights and potentially altering the conclusions of previous research."  
+{{abstract}}  
+Give the research question and research hypothesis, does the abstract seem to discuss or support this topic?
