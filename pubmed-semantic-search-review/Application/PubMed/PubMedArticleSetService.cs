@@ -3,14 +3,9 @@ using Serilog;
 
 namespace PubMedSemanticSearchReview.Application.PubMed;
 
-public class PubmedArticleSetService : IPubmedArticleSetService
+public class PubmedArticleSetService(ILogger logger) : IPubmedArticleSetService
 {
-    private readonly ILogger _logger;
-
-    public PubmedArticleSetService(ILogger logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger _logger = logger;
 
     public PubMedArticleDto? GetPubMedArticleFromXml(string xmlContent, string searchTerm)
     {

@@ -15,7 +15,7 @@ public class Abstract
             return string.Empty;
         }
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         foreach (var item in AbstractText)
         {
             if (!string.IsNullOrEmpty(item.Label))

@@ -4,14 +4,9 @@ using System.Globalization;
 
 namespace PubMedSemanticSearchReview.Infrastructure;
 
-public class CsvService<T> : ICsvService<T>
+public class CsvService<T>(ClassMap<T> classMap) : ICsvService<T>
 {
-    private readonly ClassMap<T> _classMap;
-
-    public CsvService(ClassMap<T> classMap)
-    {
-        _classMap = classMap;
-    }
+    private readonly ClassMap<T> _classMap = classMap;
 
     public void WriteCsv(string filePath, IEnumerable<T> records)
     {

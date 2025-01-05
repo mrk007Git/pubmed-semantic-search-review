@@ -9,30 +9,20 @@ using Serilog;
 
 namespace PubMedSemanticSearchReview.Application.PubMed
 {
-    public class PubMedProcessingService : IPubMedProcessingService
+    public class PubMedProcessingService(
+        IPubMedService pubMedService,
+        IPubmedArticleSetService pubMedArticleSetService,
+        IChatCompletionService chatCompletionService,
+        ICsvService<ArticleDto> csvService,
+        ILogger logger,
+        IOptions<OpenAiConfig> options) : IPubMedProcessingService
     {
-        private readonly IPubMedService _pubMedService;
-        private readonly IPubmedArticleSetService _pubMedArticleSetService;
-        private readonly IChatCompletionService _chatCompletionService;
-        private readonly ICsvService<ArticleDto> _csvService;
-        private readonly ILogger _logger;
-        private readonly OpenAiConfig _openAiConfig;
-
-        public PubMedProcessingService(
-            IPubMedService pubMedService,
-            IPubmedArticleSetService pubMedArticleSetService,
-            IChatCompletionService chatCompletionService,
-            ICsvService<ArticleDto> csvService,
-            ILogger logger,
-            IOptions<OpenAiConfig> options)
-        {
-            _pubMedService = pubMedService;
-            _pubMedArticleSetService = pubMedArticleSetService;
-            _chatCompletionService = chatCompletionService;
-            _csvService = csvService;
-            _logger = logger;
-            _openAiConfig = options.Value;
-        }
+        private readonly IPubMedService _pubMedService = pubMedService;
+        private readonly IPubmedArticleSetService _pubMedArticleSetService = pubMedArticleSetService;
+        private readonly IChatCompletionService _chatCompletionService = chatCompletionService;
+        private readonly ICsvService<ArticleDto> _csvService = csvService;
+        private readonly ILogger _logger = logger;
+        private readonly OpenAiConfig _openAiConfig = options.Value;
 
         public async Task ProcessPubMedSearchTermsAsync(string articleOutputSavePath)
         {

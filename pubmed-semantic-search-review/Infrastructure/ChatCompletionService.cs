@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
 using DhsResearchLibrary.Application.OpenAI;
+using DhsResearchLibrary.Infrastructure.OpenAI;
 using Microsoft.Extensions.Options;
 using PubMedSemanticSearchReview.Application.OpenAi;
 using PubMedSemanticSearchReview.Application.OpenAi.AbstractAnalysis;
@@ -12,7 +13,7 @@ using Serilog;
 using AbstractAnalysisProperties = PubMedSemanticSearchReview.Application.OpenAi.AbstractAnalysis.Properties;
 using RequestMessage = PubMedSemanticSearchReview.Application.OpenAi.Requests.Message;
 
-namespace DhsResearchLibrary.Infrastructure.OpenAI;
+namespace PubMedSemanticSearchReview.Infrastructure;
 
 public class ChatCompletionService(HttpClient httpClient, IOptions<OpenAiConfig> options, ILogger logger) : IChatCompletionService
 {
