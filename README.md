@@ -2,15 +2,33 @@
 
 # PubMed Semantic Search Review
 
-**PubMed Semantic Search Review** is a tool designed to enhance systematic literature reviews by leveraging semantic search capabilities through OpenAI's GPT models. This project is focused on improving the relevance and comprehensiveness of PubMed article searches, with initial support for OpenAI's GPT-based models and PubMed's eUtils API.
+**PubMed Semantic Search Review** is a tool designed to systematically query the PubMed API using single search terms and optional date ranges. By design, it only accepts single search terms for focused retrieval. Boolean operations (`AND`, `OR`) can be applied during the analysis phase, enabling more complex evaluations of relevance after data retrieval.
+
+The tool processes each article's title and abstract text by combining them into a prompt for OpenAI's GPT models, generating structured outputs defined by the following schema:
+
+```csharp
+public class StructuredResponseDto : StructuredResponseBaseDto
+{
+    [JsonPropertyName("is_relevant")]
+    public bool IsRelevant { get; set; }
+    [JsonPropertyName("estimated_percent_relevant")]
+    public decimal? EstimatedPercentRelevant { get; set; }
+    [JsonPropertyName("abstract_summary")]
+    public string? AbstractSummary { get; set; }
+    [JsonPropertyName("relevance_reason")]
+    public string? RelevanceReason { get; set; }
+}
+```
+
+---
 
 ## Features
 
-- Retrieves PubMed articles using specific search terms and filters.
-- Analyzes articles for relevance using OpenAI's GPT models.
+- Queries PubMed using single search terms and optional date ranges.
+- Processes article titles and abstracts with OpenAI GPT models for structured relevance analysis.
 - Outputs results in a structured CSV format for easy review.
-- Supports bulk processing with a rate limit to prevent API throttling.
-- Logs system operations for better traceability and debugging.
+- Supports bulk processing with rate limits to prevent API throttling.
+- Provides detailed logs for better traceability and debugging.
 
 ---
 
@@ -68,18 +86,25 @@
 
 ### Key Considerations
 
-1. **OpenAI Costs**: 
+1. **Temperature Setting**:
+   - The `Temperature` parameter in the `OpenAiConfig` section directly influences the creativity or randomness of the model's output. It is a critical tuning parameter to balance between deterministic and exploratory responses.
+
+2. **System and User Prompts**:
+   - The **system prompt** (`SystemPrompt_AbstractAnalysis.txt`) sets the tone and context for the model's behavior (e.g., "You are a helpful and professional medical researcher").
+   - The **user prompt** (`UserPrompt_AbstractAnalysis.txt`) incorporates the article's title and abstract, alongside your specific research question and hypothesis, to guide the model's structured analysis.
+
+3. **OpenAI Costs**:
    - This project incurs costs based on token usage.
    - Current pricing:
      - **Prompt Tokens**: $2.50 per million tokens.
      - **Completion Tokens**: $10.00 per million tokens.
    - Monitor your API usage and budget carefully.
 
-2. **Rate Limiting**:
+4. **Rate Limiting**:
    - The PubMed API limits requests to 1 per second by default.
    - The tool implements a delay to adhere to this limit.
 
-3. **Logging**:
+5. **Logging**:
    - Logs are saved to the `logs` directory, segmented by hour.
    - Review logs for insights or troubleshooting.
 
@@ -102,3 +127,4 @@ This project is licensed under the [MIT License](LICENSE).
 ## Support
 
 For issues or feature requests, please open a ticket in the [GitHub Issues](https://github.com/your-repo/pubmed-semantic-search-review/issues) section.
+
