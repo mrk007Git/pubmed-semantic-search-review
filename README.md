@@ -1,5 +1,7 @@
 [![.NET](https://github.com/mrk007Git/pubmed-semantic-search-review/actions/workflows/dotnet.yml/badge.svg)](https://github.com/mrk007Git/pubmed-semantic-search-review/actions/workflows/dotnet.yml)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14601207.svg)](https://doi.org/10.5281/zenodo.14601207)
+
 # PubMed Semantic Search Review
 
 **PubMed Semantic Search Review** is a tool designed to systematically query the PubMed API using single search terms and optional date ranges. By design, it only accepts single search terms for focused retrieval. Boolean operations (`AND`, `OR`) can be applied during the analysis phase, enabling more complex evaluations of relevance after data retrieval.
