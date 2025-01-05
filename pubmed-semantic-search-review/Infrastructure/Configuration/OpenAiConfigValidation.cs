@@ -52,6 +52,23 @@ internal class OpenAiConfigValidation : IValidateOptions<OpenAiConfig>
             }
         }
 
+        if(options.TokenPricing == null)
+        {
+            errors.Add($"{nameof(options.TokenPricing)} is required.");
+        }
+        else
+        {
+            if (options.TokenPricing.PromptTokensUsdPerMillion <= 0)
+            {
+                errors.Add($"{nameof(options.TokenPricing.PromptTokensUsdPerMillion)} must be greater than 0.");
+            }
+
+            if (options.TokenPricing.CompletionTokensUsdPerMillion <= 0)
+            {
+                errors.Add($"{nameof(options.TokenPricing.CompletionTokensUsdPerMillion)} must be greater than 0.");
+            }
+        }
+
         if (errors.Count != 0)
         {
             return ValidateOptionsResult.Fail(errors);

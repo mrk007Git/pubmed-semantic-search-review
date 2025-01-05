@@ -75,6 +75,7 @@ public class ChatCompletionService(HttpClient httpClient, IOptions<OpenAiConfig>
         }
 
         var jsonResponse = response.Choices.FirstOrDefault()?.Message.Content;
+        var usage = response.Usage;
 
         if (jsonResponse == null)
         {
@@ -85,6 +86,12 @@ public class ChatCompletionService(HttpClient httpClient, IOptions<OpenAiConfig>
         if (!string.IsNullOrEmpty(jsonResponse))
         {
             StructuredResponseDto? result = JsonSerializer.Deserialize<StructuredResponseDto>(jsonResponse);
+
+            if (result != null && usage != null)
+            {
+                result.Usage = UsageDto.Create(usage);
+            }
+
             return result;
         }
 

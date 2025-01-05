@@ -18,6 +18,8 @@ public partial class ArticleDto
     public int? PromptTokens { get; set; }
     public int? CompletionTokens { get; set; }
 
+    public double? EstimatedTotalCost { get; set; }
+
     public string? SearchTerm { get; set; }
 
     public static ArticleDto Create(string searchTerm, PubMed.PubMedArticleDto pubMedArticleDto)
@@ -37,7 +39,8 @@ public partial class ArticleDto
             JournalName = pubMedArticleDto.JournalName,
             PmId = pubMedArticleDto.PmId,
             PromptTokens = null,
-            CompletionTokens = null
+            CompletionTokens = null,
+            EstimatedTotalCost = null
         };
     }
 }

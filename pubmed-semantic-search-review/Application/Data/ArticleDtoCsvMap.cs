@@ -6,6 +6,7 @@ internal class ArticleDtoCsvMap : ClassMap<ArticleDto>
 {
     public ArticleDtoCsvMap()
     {
+        Map(m => m.SearchTerm).Name("Search Term");
         Map(m => m.PmId).Name("PMID");
         Map(m => m.DateComplete).Name("Date Completed");
         Map(m => m.DateRevised).Name("Date Revised");
@@ -19,6 +20,6 @@ internal class ArticleDtoCsvMap : ClassMap<ArticleDto>
         Map(m => m.DateProcessed).Name("Date Processed");
         Map(m => m.PromptTokens).Name("Prompt Tokens");
         Map(m => m.CompletionTokens).Name("Completion Tokens");
-        Map(m => m.SearchTerm).Name("Search Term");
+        Map(m => m.EstimatedTotalCost).Name("Estimated Total Cost");
     }
 }

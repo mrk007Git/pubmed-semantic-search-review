@@ -18,7 +18,14 @@ public class Abstract
         StringBuilder sb = new StringBuilder();
         foreach (var item in AbstractText)
         {
-            sb.AppendLine($"{item.Label}\r\n{item.Text}");
+            if (!string.IsNullOrEmpty(item.Label))
+            {
+                sb.AppendLine($"{item.Label}\r\n{item.Text}");
+            }
+            else
+            {
+                sb.AppendLine(item.Text);
+            }
         }
 
         return sb.ToString();

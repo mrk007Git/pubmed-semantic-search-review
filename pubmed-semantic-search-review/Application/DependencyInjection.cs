@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PubMedSemanticSearchReview.Application.Data;
 using PubMedSemanticSearchReview.Application.PubMed;
+using PubMedSemanticSearchReview.Infrastructure;
 using Serilog;
 
 namespace PubMedSemanticSearchReview.Application;
@@ -19,6 +21,8 @@ internal static class DependencyInjection
 
         services.AddTransient<IPubmedArticleSetService, PubmedArticleSetService>();
         services.AddTransient<IPubMedProcessingService, PubMedProcessingService>();
+
+        services.AddSingleton<ICsvService<ArticleDto>>(provider => new CsvService<ArticleDto>(new ArticleDtoCsvMap()));
 
         return services;
     }

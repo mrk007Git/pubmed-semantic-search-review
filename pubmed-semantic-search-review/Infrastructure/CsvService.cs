@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CsvHelper;
 
-namespace PubMedSemanticSearchReview.Infrastructure
+namespace PubMedSemanticSearchReview.Infrastructure;
+
+public class CsvService<T> : ICsvService<T>
 {
-    public class CsvService<T> : ICsvService<T>
+    private readonly ClassMap<T> _classMap;
+
+    public CsvService(ClassMap<T> classMap)
     {
-        public void WriteCsv(string filePath, IEnumerable<T> records)
-        {
-            using var writer = new StreamWriter(filePath);
-            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
-            csv.WriteRecords(records);
-        }
+        _classMap = classMap;
+    }
+
+    public void WriteCsv(string filePath, IEnumerable<T> records)
+    {
+        using var writer = new StreamWriter(filePath);
+        using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+        csv.Context.RegisterClassMap(_classMap);
+        csv.WriteRecords(records);
     }
 }

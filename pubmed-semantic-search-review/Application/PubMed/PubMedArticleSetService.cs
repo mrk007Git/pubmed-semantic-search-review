@@ -12,7 +12,7 @@ public class PubmedArticleSetService : IPubmedArticleSetService
         _logger = logger;
     }
 
-    public PubMedArticleDto? GetPubMedArticleFromXml(string xmlContent)
+    public PubMedArticleDto? GetPubMedArticleFromXml(string xmlContent, string searchTerm)
     {
         var pubmedArticleSet = GetPubmedArticleSet(xmlContent);
         if (pubmedArticleSet == null || pubmedArticleSet.PubmedArticles == null || pubmedArticleSet.PubmedArticles.Count == 0)
@@ -36,8 +36,6 @@ public class PubmedArticleSetService : IPubmedArticleSetService
             {
                 return null;
             }
-
-            var searchTerm = Path.GetFileName(Path.GetDirectoryName(xmlContent));
 
             return PubMedArticleDto.Create(
                                    long.Parse(medlineCitation.PMID),
