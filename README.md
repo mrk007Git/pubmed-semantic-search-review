@@ -1,3 +1,5 @@
+[![.NET](https://github.com/mrk007Git/pubmed-semantic-search-review/actions/workflows/dotnet.yml/badge.svg)](https://github.com/mrk007Git/pubmed-semantic-search-review/actions/workflows/dotnet.yml)
+
 # PubMed Semantic Search Review
 
 **PubMed Semantic Search Review** is a tool designed to enhance systematic literature reviews by leveraging semantic search capabilities through OpenAI's GPT models. This project is focused on improving the relevance and comprehensiveness of PubMed article searches, with initial support for OpenAI's GPT-based models and PubMed's eUtils API.
