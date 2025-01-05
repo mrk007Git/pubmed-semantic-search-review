@@ -36,7 +36,7 @@
 		<None Update="appsettings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Update="Data\PubMedSearchTerms.txt">
+		<None Update="Data\PubMedSearchTerms.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Data\SystemPrompt.txt">

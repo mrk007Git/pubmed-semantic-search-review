@@ -3,6 +3,9 @@
 public class PubMedConfig
 {
     public string BaseAddress { get; set; } = default!;
+
+    public string BaseArticleUrl { get; set; } = default!;
+
     public string ApiKey { get; set; } = default!;
 
     public int RateLimitPerSecond { get; set; }

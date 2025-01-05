@@ -15,6 +15,12 @@ internal class PubMedConfigValidation : IValidateOptions<PubMedConfig>
             errors.Add($"{nameof(options.BaseAddress)} is required.");
         }
 
+        if (string.IsNullOrWhiteSpace(options.BaseArticleUrl))
+        {
+            errors.Add($"{nameof(options.BaseArticleUrl)} is required.");
+        }
+
+
         if (string.IsNullOrWhiteSpace(options.ApiKey))
         {
             errors.Add($"{nameof(options.ApiKey)} is required.");

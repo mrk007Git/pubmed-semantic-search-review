@@ -9,6 +9,8 @@ public partial class ArticleDto
     public string? ArticleTitle { get; set; }
     public string? AbstractText { get; set; }
 
+    public string? ArticleUrl { get; set; }
+
     public bool? IsRelevant { get; set; }
     public decimal? EstimatedPercentRelevant { get; set; }
     public string? AbstractSummary { get; set; }
@@ -22,7 +24,7 @@ public partial class ArticleDto
 
     public string? SearchTerm { get; set; }
 
-    public static ArticleDto Create(string searchTerm, PubMed.PubMedArticleDto pubMedArticleDto)
+    public static ArticleDto Create(string searchTerm, PubMed.PubMedArticleDto pubMedArticleDto, string articleBaseUrl)
     {
         return new ArticleDto
         {
@@ -40,7 +42,8 @@ public partial class ArticleDto
             PmId = pubMedArticleDto.PmId,
             PromptTokens = null,
             CompletionTokens = null,
-            EstimatedTotalCost = null
+            EstimatedTotalCost = null,
+            ArticleUrl = articleBaseUrl.EndsWith("/") ? $"{articleBaseUrl}{pubMedArticleDto.PmId}" : $"{articleBaseUrl}/{pubMedArticleDto.PmId}"
         };
     }
 }

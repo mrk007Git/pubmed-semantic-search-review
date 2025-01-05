@@ -21,5 +21,6 @@ internal class ArticleDtoCsvMap : ClassMap<ArticleDto>
         Map(m => m.PromptTokens).Name("Prompt Tokens");
         Map(m => m.CompletionTokens).Name("Completion Tokens");
         Map(m => m.EstimatedTotalCost).Name("Estimated Total Cost");
+        Map(m => m.ArticleUrl).Name("Article URL");
     }
 }

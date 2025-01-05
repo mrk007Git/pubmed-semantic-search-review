@@ -15,14 +15,15 @@ namespace PubMedSemanticSearchReview.Application.PubMed
         IChatCompletionService chatCompletionService,
         ICsvService<ArticleDto> csvService,
         ILogger logger,
-        IOptions<OpenAiConfig> options) : IPubMedProcessingService
+        IOptions<OpenAiConfig> openAiConfigOptions, IOptions<PubMedConfig> pubMedConfigOptions) : IPubMedProcessingService
     {
         private readonly IPubMedService _pubMedService = pubMedService;
         private readonly IPubmedArticleSetService _pubMedArticleSetService = pubMedArticleSetService;
         private readonly IChatCompletionService _chatCompletionService = chatCompletionService;
         private readonly ICsvService<ArticleDto> _csvService = csvService;
         private readonly ILogger _logger = logger;
-        private readonly OpenAiConfig _openAiConfig = options.Value;
+        private readonly OpenAiConfig _openAiConfig = openAiConfigOptions.Value;
+        private readonly PubMedConfig _pubMedConfig = pubMedConfigOptions.Value;
 
         public async Task ProcessPubMedSearchTermsAsync(string articleOutputSavePath)
         {
@@ -32,21 +33,39 @@ namespace PubMedSemanticSearchReview.Application.PubMed
             foreach (var pubMedSearchTerm in pubMedSearchTerms)
             {
                 _logger.Information("Processing PubMed search term: {PubMedSearchTerm}", pubMedSearchTerm);
-                var articles = await ProcessSearchTermAsync(pubMedSearchTerm);
-                articleResults.Add(pubMedSearchTerm, articles);
+                var articles = await ProcessSearchTermAsync(pubMedSearchTerm.SearchTerm, pubMedSearchTerm.StartDate, pubMedSearchTerm.EndDate);
+                articleResults.Add(pubMedSearchTerm.SearchTerm, articles);
             }
 
             SaveResults(articleOutputSavePath, articleResults);
         }
 
-        private async Task<List<ArticleDto>> ProcessSearchTermAsync(string pubMedSearchTerm)
+        private async Task<List<ArticleDto>> ProcessSearchTermAsync(string pubMedSearchTerm, DateTime? startDate = null, DateTime? endDate = null)
         {
             var articles = new List<ArticleDto>();
-            var pmIds = await _pubMedService.BasicSearchAsync(pubMedSearchTerm);
+            var pmIds = await _pubMedService.BasicSearchAsync(pubMedSearchTerm, startDate, endDate);
 
+            if(pmIds.Count > 100)
+            {
+                _logger.Warning("{count} articles found for search term: {PubMedSearchTerm}", pmIds.Count, pubMedSearchTerm);
+
+                Console.WriteLine($"{pmIds.Count} articles found for search term: {pubMedSearchTerm}. Do you wish to proceed? Press 'Enter' to continue.");
+                var key = Console.ReadKey().Key;
+                if (key != ConsoleKey.Enter)
+                {
+                    _logger.Information("Exiting...");
+                    return articles;
+                }
+            }
+            else
+            {
+                _logger.Information("Found {PubMedArticleCount} articles for search term: {PubMedSearchTerm}", pmIds.Count, pubMedSearchTerm);
+            }
+         
+            int totalCount = pmIds.Count;
             foreach (var pmId in pmIds)
             {
-                _logger.Information("Processing PubMed article: {PubMedArticleId}", pmId);
+                _logger.Information("Processing PubMed article: {PubMedArticleId}. Remaining: {Remaining}", pmId, --totalCount);
                 var article = await ProcessArticleAsync(pmId, pubMedSearchTerm);
                 if (article != null)
                 {
@@ -68,7 +87,7 @@ namespace PubMedSemanticSearchReview.Application.PubMed
                 return null;
             }
 
-            var article = ArticleDto.Create(pubMedSearchTerm, pubMedArticle);
+            var article = ArticleDto.Create(pubMedSearchTerm, pubMedArticle, _pubMedConfig.BaseArticleUrl);
 
             if (string.IsNullOrEmpty(article.ArticleTitle) || string.IsNullOrEmpty(article.AbstractText))
             {
