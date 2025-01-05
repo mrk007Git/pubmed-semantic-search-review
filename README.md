@@ -91,11 +91,11 @@ public class StructuredResponseDto : StructuredResponseBaseDto
 
 2. **System and User Prompts**:
    - The **system prompt** (`SystemPrompt_AbstractAnalysis.txt`) sets the tone and context for the model's behavior (e.g., "You are a helpful and professional medical researcher").
-   - The **user prompt** (`UserPrompt_AbstractAnalysis.txt`) incorporates the article's title and abstract, alongside your specific research question and hypothesis, to guide the model's structured analysis.
+   - The **user prompt** (`UserPrompt_AbstractAnalysis.txt`) incorporates the article's title and abstract, alongside your specific research question and hypothesis, to guide the model's structured analysis. Text in this file must contain a placeholder for the abstract which is currently _{{abstract}}_.
 
 3. **OpenAI Costs**:
    - This project incurs costs based on token usage.
-   - Current pricing:
+   - Current pricing (January 1st, 2025):
      - **Prompt Tokens**: $2.50 per million tokens.
      - **Completion Tokens**: $10.00 per million tokens.
    - Monitor your API usage and budget carefully.
