@@ -18,6 +18,7 @@ internal static class DependencyInjection
         services.AddSingleton(Log.Logger);
 
         services.AddTransient<IPubmedArticleSetService, PubmedArticleSetService>();
+        services.AddTransient<IPubMedProcessingService, PubMedProcessingService>();
 
         return services;
     }
